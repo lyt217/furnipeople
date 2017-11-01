@@ -1,0 +1,228 @@
+/* ───── Customizations ───── */
+
+/* 브라우저를 늘릴때 체크됨 */
+@media (min-width: 992px) {
+    .content {
+        width: 1260px;
+    }
+}
+
+/* 브라우저를 줄일 때 체크됨 */
+@media (max-width: 992px) {
+    .job-img, .mobile-hide {
+        display: none;
+    }
+    .job-img2, .mobile-hide {
+        display: none;
+    }
+}
+
+/* 헤더css에서 없어지는 현상 해결 */
+.header-v3 .dropdown > a:after {
+    font-family: FontAwesome;
+}
+
+/* Block Headline override */
+.headline {
+    display: block;
+    margin: 10px 0 10px 0;
+    border-bottom: 1px dotted #b5b5b5;
+}
+
+/* Sidebar Menu v1 펼침/닫침 색상 고정 */
+.sidebar-furni:link {
+    color: #fff;
+    background: #717984;
+}
+
+/* More Buttton */
+.osmore-btn {
+  color: #777;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 9px;
+  text-align: center;
+  background: #f5f5f5;
+}
+
+.osmore-btn:hover {
+  color: #fff;
+  background: #9c8061;
+}
+
+/* div 좌측 여백, Use Horizontal Form */
+.space-left-20 {
+    padding-left: 20px;
+}
+
+/* bootstrap panel, body.. override */
+.panel-body {
+    padding: 10px;
+}
+
+/* 디바이더형 헤딩 폰트를 20에서 16으로 줄임 */
+.tag-box h2 {
+    font-size: 16px;
+}
+
+/* a 링크에 기본컬러를 적용하지 않기위해 */
+.hrefcolor-basic a {
+    color: #333;
+}
+
+.hrefcolor-side a {
+    color: #555;
+    font-family: '돋움';
+}
+
+/* Talk 게시판 목록의 큰버튼 */
+.btn-talk, a.btn-talk {
+    font-size: 16px;
+    padding: 20px 36px;
+}
+
+/* Talk 게시판 내용보기 */
+.talk-titlebar {
+    overflow: hidden;
+    padding: 10px 15px;
+    border-top: 1px solid #ddd;
+}
+
+.talk-contents {
+    padding: 20px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 댓글 Title Box */
+.profile .panel-profile {
+    border: none;
+    margin-bottom: 0;
+    box-shadow: none;
+}
+
+.profile .panel-heading {
+    color: #585f69;
+    background: #fff;
+    padding: 7px 15px;
+    border-bottom: solid 3px #f7f7f7;
+}
+
+.profile .panel-title {
+    font-size: 14px;
+}
+
+/* 댓글 Media */
+.profile .media.media-v2 {
+    margin-top: 0;
+    padding: 5px 0 0;
+    border-top: 1px solid #eee;
+}
+
+.profile .media.media-v2:first-child {
+    border-top: none;
+}
+
+.profile .media.media-v2 .media.media-v2 {
+    margin-top: 20px;
+    padding-bottom: 0;
+}
+
+.profile .media.media-v2 img.media-object {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+/* 댓글 Media Body */
+.profile .media.media-v2 .media-body {
+    overflow: hidden;
+}
+
+.profile .media.media-v2 .media-body p {
+    color: #555;
+    line-height: 1.4;
+}
+
+/* 댓글 Media Heading */
+.profile .media.media-v2 .media-heading {
+    margin: 0 0 5px;
+    font-size: 13px;
+    position: relative;
+}
+
+.profile .media.media-v2 .media-heading a,
+.profile .media.media-v2 .media-heading a:hover {
+    color: #555;
+}
+
+.profile .media.media-v2 .media-heading strong {
+    padding-right: 5px;
+    color: #324c80;
+}
+
+.profile .media.media-v2 .media-heading small {
+    top: 7px;
+    right: 0;
+    color: #999;
+    font-size: 12px;
+    position: absolute;
+}
+
+/* 댓글 Expand List */
+.profile i.expand-list {
+    color: #777;
+    padding: 5px;
+    min-width: 20px;
+    font-size: 12px;
+    text-align: center;
+    display: inline-block;
+    border: 1px solid #777;
+}
+
+.profile i.expand-list:hover {
+    color: #999;
+    border-color: #999;
+}
+
+/* 우사이드바 이미지버튼을 블로그형으로 */
+.blog-photos li img {
+    width: 88px;
+    height: 65px;
+    margin: 0 0 4px;
+}
+
+/* 마켓상품 디테일뷰 미니포토, 상단설명 override */
+.blog-photostream li {
+    margin: 10px 2px 4px;
+}
+
+.blog-photostream li img {
+    width: 70px;
+    height: 70px;
+}
+
+/* 마켓상품, 포트폴리오등 이미지 Ajax 업로드폼 */
+.photo-upload {
+    padding: 10px 20px;
+    background: #fff;
+    /* position: relative; */
+}
+
+.photo-upload img {
+    float: left;
+    width: 120px;
+    height: 120px;
+    /* height: auto; */
+    padding: 3px;
+    margin: 0 20px 0 0;
+    border: 1px solid #eee;
+}
+
+.photo-upload h3 {
+    margin: 0 0 5px;
+    font-size: 15px;
+}
+
+.photo-upload p.hex {
+    margin-bottom: 10px;
+}

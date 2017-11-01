@@ -1,0 +1,2 @@
+좌측메뉴는 signup_company_update.php와도 동기화 해야 함 아 포트롤리오등록.php에도
+

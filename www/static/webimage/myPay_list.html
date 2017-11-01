@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+{% include "./top.html" %}
+
+<!-- wrap s -->
+<div id="wrap">
+
+	{% include "./menu.html" %}
+
+	<!-- contents s -->
+	<div id="contents">
+		<!-- popular_itam_container s -->
+		<div class="popular_itam_container">
+			<!-- popular_item s -->
+			<div class="popular_item">
+				<h2>실시간 인기상품</h2>
+				<ul>
+				</ul>
+			</div>
+			<!-- popular_item e -->
+		</div>
+		<!-- popular_itam_container e -->
+		<!-- sub_wrap s -->
+		<div class="sub_wrap pt_0">
+			<!-- sub_container s -->
+			<div class="sub_container">
+				<!-- sub_menu s -->
+				<div class="left_menu">
+					<h2>결제관리 <span>MY PAGE</span></h2>
+					<p class="left_btn"><a href="/myMotor_insupd/0"><span>상품등록</span></a></p>
+					<ul class="menu">
+						<li><a href="/myMemb">회원정보수정</a></li>
+						{% if user.gubun == '중검단' %}
+						    <li><a href="/myQualify_list_for_qualify">평가관리</a></li>
+                        {% else %}
+							<li><a href="/myMotor_list">등록 리스트</a></li>
+							<li><a href="/myCart_list">장바구니</a></li>
+						    <li><a href="/myQualify_list">평가요청내역</a></li>
+							<li class="on"><a href="/myPay_list">결제관리</a></li>
+							<li><a href="/myBuy_list">구매내역</a></li>
+							<li><a href="/myShip_list">탁송</a></li>
+                        {% endif %}
+						<li><a href="/myWithdraw">회원탈퇴</a></li>
+					</ul>
+					<!-- advertising s -->
+					<div id="bannerImg" class="mb_15">
+					</div>
+					<!-- advertising e -->
+					<!-- service_center s -->
+					<!--<div class="service_center">
+						<ul>
+							<li>TEL.<strong>1234-1234</strong></li>
+							<li>AM 09:00 ~ PM 06:00</li>
+							<li>공휴일·월요일은 쉽니다</li>
+						</ul>
+					</div>-->
+					<!-- service_center e -->
+				</div>
+				<!-- sub_menu e -->
+				<!-- sub_header s -->
+				<div class="sub_header">
+					<ol class="sub_navi">
+						<li>JOONGUM</li>
+						<li>MY PAGE</li>
+						<li>결제관리</li>
+					</ol>
+					<p class="btn_back"><a href="#" onclick="window.history.go(-1);">BACK</a></p>
+				</div>
+				<!-- sub_header e -->
+				<!-- sub_contents s -->
+				<div class="sub_contents" id="content">
+					<h3>상품구매 또는 평가요청에 대한 결제내역 입니다</h3>
+					<!-- basic_table s -->
+					<div class="basic_table">
+						{% if pay_list.length == 0 %}
+							<!-- none_product 20170126 추가 s -->
+							<p class="none_product">결제한 상품이 없습니다 <span><br />상품을 결제해주세요</span></p><!-- 상품이 없을 때 class안에 hide 지워주세요 e -->
+							<!-- none_product 20170126 추가 e -->
+						{% else %}
+							<table summary="NO, 상품등록코드/구매번호, 상품정보, 상태, 날짜 안내" class="tr_list_over line_top_gray">
+								<colgroup>
+									<col width="19%" />
+									<col />
+									<col width="35%" />
+									<col width="14%" />
+									<col width="20%" />
+								</colgroup>
+								<caption>결제관리</caption>
+								<thead>
+									<tr>
+										<th scope="col">결제번호</th>
+										<th scope="col" colspan="2">상품정보</th>
+										<!--<th scope="col">상태</th>-->
+										<th scope="col">결제정보</th>
+										<th scope="col">결제상태</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for x in pay_list %}
+									<tr>
+										<td>
+											{% if x.pay_method != 'dsend' %}
+												<a href="#" onclick="openWin('{{x.receipt_url}}');return false"><p class="txt_cut">{{x.merchant_uid}}
+													<br/><span class="txt_box_blue">영수증 보기</span></p></a>
+											{% else %}
+												<p class="txt_cut" style="cursor:default;">{{x.merchant_uid}}</p>
+											{% endif %}
+										</td>
+										<td><a href="/search_view/{{x.motorSeq}}" target="joongum_motor"><img src="http://res.cloudinary.com/joongum/image/upload/ar_4:3,c_fill/c_limit,h_120,w_160/v{{x.imgVer}}/{{x.imgPid}}.jpg" alt="오토바이 사진" /></a></td>
+										<td>
+											<dl class="product_info">
+												<dt><a href="/search_view/{{x.motorSeq}}" target="joongum_motor"><span class="txt_buy_num">No.{{x.motorSeq}}</span><span style="font-size:16px;color:#000000">{{x.motorCo}} {{x.model}}</span></a></dt>
+												<dd class="txt_info"><span class="comma">{{x.cc}}</span> cc &nbsp; <span class="comma">{{x.paid_amount}}</span> 원</dd>
+											</dl>
+										</td>
+										<!--<td><strong class="txt_box_blue">입금완료</strong></td>-->
+										<td>
+											<span class="mb_5">{{x.insDt}}</span>
+											{% if x.pay_method == 'card' %}<span>신용카드</span>{% endif %}
+											{% if x.pay_method == 'trans' %}<span>계좌이체</span>{% endif %}
+											{% if x.pay_method == 'vbank' %}<span>가상계좌</span>{% endif %}
+										</td>
+										<td>
+											{% if x.status == 'ready' %}
+												{% if x.payGubun == '입금대기' %}
+													<span class="mb_5">구매</span><br/><strong class="txt_red mb_5">입금대기</strong>
+												{% else %}
+													<span class="mb_5">{{x.payGubun}}</span><br/><strong class="txt_red mb_5">입금대기</strong>
+												{% endif %}
+											{% endif %}
+											{% if x.status == 'paid' %}<span class="mb_5">{{x.payGubun}}</span><br/><span class="mb_5">결제완료</span>{% endif %}
+											{% if x.status == 'cancelled' %}<span class="mb_5">{{x.payGubun}}</span><br/><strong class="txt_red mb_5">결제취소</strong>{% endif %}
+											{% if x.status == 'failed' %}<span class="mb_5">{{x.payGubun}}</span><br/><strong class="txt_red mb_5">결제실패</strong>{% endif %}
+											{% if x.payGubun == '구매' && x.shipStatus == '탁송준비' && x.status == 'paid' %}
+												<br/><a href="#" onclick="fnPayCancel('{{x.motorSeq}}','{{x.pay_method}}');return false"><strong class="txt_box_gray">결제취소</strong></a>
+											{% endif %}
+										</td>
+									</tr>
+									{% if x.pay_method == 'vbank' || x.pay_method == 'dsend' %}
+										<tr>
+											<td colspan="5">
+												결제금액: <strong class="comma">{{x.paid_amount}}</strong>원, &nbsp; {% if x.pay_method == 'vbank' %}가상{% else %}입금{% endif %}계좌번호: <strong>{{x.vbank_num}}</strong><br/>
+												은행명: {{x.vbank_name}}, &nbsp; 예금주: {{x.vbank_holder}}<br/>
+												입금기한: <strong>{{x.vbank_date}}</strong>, &nbsp; 실제입금: 
+												{% if x.vbank_receiveDt == '' %}<span class="txt_red">없음</span>{% endif %}
+												{% if x.vbank_receiveDt != '' %}{{x.vbank_receiveDt}}{% endif %}
+											</td>
+										</tr>
+									{% endif %}
+									{% endfor %}
+								</tbody>
+							</table>
+						{% endif %}
+					</div>
+					<!-- basic_table e -->
+					<!-- basic_paging s -->
+					{% if pay_list.length > 0 %}
+						<div class="basic_paging">
+							<p>
+								{% if page.curPage < 2 %}
+									<a href="#" class="btn_first" onclick="return false"><span>&lt;&lt;</span></a>
+									<a href="#" class="btn_prev" onclick="return false">&lt;</a>
+								{% else %}
+									<!--<a href="/myPay_list/{{page.curPage - 1}}" class="btn_first"><span>&lt;&lt;</span></a>
+									<a href="/myPay_list/{{page.curPage - 1}}" class="btn_prev">&lt;</a>-->
+									<a href="#" class="btn_first" onclick="fnPaging('1', '0')"><span>&lt;&lt;</span></a>
+									<a href="#" class="btn_prev" onclick="fnPaging('{{page.curPage - 1}}','0')">&lt;</a>
+								{% endif %}
+								{% for i in page.pageJson %}
+									{% if page.curPage == i %}
+										<a href="#" class="on" onclick="return false">{{i}}</a>
+									{% else %}
+										<!--<a href="/myPay_list/{{i}}">{{i}}</a>-->
+										<a href="#" onclick="fnPaging('{{i}}','0')">{{i}}</a>
+									{% endif %}
+								{% endfor %}
+								{% if page.curPage < page.totPage %}
+									<!--<a href="/myPay_list/{{page.curPage + 1}}" class="btn_next">&gt;</a>
+									<a href="/myPay_list/{{page.totPage}}" class="btn_end"><span>&gt;&gt;</span></a>-->
+									<a href="#" class="btn_next" onclick="fnPaging('{{page.curPage}}','1')">&gt;</a>
+									<a href="#" class="btn_end" onclick="fnPaging('{{page.totPage}}','0')"><span>&gt;&gt;</span></a>
+								{% else %}
+									<a href="#" class="btn_next" onclick="return false">&gt;</a>
+									<a href="#" class="btn_end" onclick="return false"><span>&gt;&gt;</span></a>
+								{% endif %}
+							</p>
+						</div>
+					{% endif %}
+					<!-- basic_paging e -->
+				</div>
+				<!-- sub_contents e -->
+			</div>
+			<!-- sub_container e -->
+		</div>
+		<!-- sub_wrap e -->
+	</div>
+	<!-- contents e -->
+	<!-- pop_container :: 결제취소 s -->
+	<div class="pop_container" id="pay_cancel"><!-- open 시 "pop_open" 클래스 추가 -->
+		<!-- pop_contents s -->
+		<div class="pop_contents">
+			<h2><span class="icon_search02">결제 취소</span></h2>
+			<p class="btn_close"><a href="#contents" class="btn_pop_close">X</a></p>
+			<!-- scroll_contents s -->
+			<div class="scroll_contents">
+				<!-- basic_box_dashed s -->
+				<div class="basic_box_dashed">
+					<!-- box_container s -->
+					<div class="box_container ptb_0">
+						<ul class="basic_list04" id="my_info">
+							<li>탁송상태가 "탁송준비(탁송전)"일 때만 결제취소가 가능합니다.</li>
+							<li class="when_vbank">가상계좌(무통장입금)으로 결제한 경우에는 <strong>회원정보수정</strong> 메뉴화면에서 <strong class="txt_red">환급받을 계좌정보가 미리 등록</strong>되어 있어야 합니다.</li>
+						</ul>
+					</div>
+					<!-- box_container e -->
+				</div>
+				<!-- basic_box_dashed e -->
+				<h3 class="line_btm_darkgray when_vbank">환급받을 계좌정보</h3>
+				<ul class="basic_list05 dt_small">
+					<li class="when_vbank">
+						<dl>
+							<dt>은행명</dt>
+							<dd><div class="basic_input_readonly"><input type="text" id="bankNm" readonly></dd>
+						</dl>
+					</li>
+					<li class="when_vbank">
+						<dl>
+							<dt>계좌번호</dt>
+							<dd><div class="basic_input_readonly"><input type="text" id="accountNo" readonly></dd>
+						</dl>
+					</li>
+					<li class="when_vbank">
+						<dl>
+							<dt>예금주명</dt>
+							<dd><div class="basic_input_readonly"><input type="text" id="accountHolder" readonly></dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+							<dt>취소사유</dt>
+							<dd><div class="basic_textarea"><textarea id="reason" placeholder="한글 200자, 영문 600자 이내"></textarea></div></dd>
+						</dl>
+						<div>
+							<span style="font-size:13px; letter-spacing:-1px; color:#E44B44;">※ HTML 태그는 사용할 수 없습니다.</span>
+							<span style="float:right; font-size:13px; color:#aaa;">(<span id="reasonByteLength">0</span>/<span id="reasonByteMax"></span>자)</span>
+						</div>
+					</li>
+				</ul>
+				<!-- btn_container e -->
+				<div class="btn_container">
+					<p class="mb_35"><a href="#" class="basic_btn03_red" onclick="return false">결제취소</a><a href="#contents" class="basic_btn03 btn_pop_close">닫기</a></p>
+				</div>
+				<!-- btn_container e -->
+			</div>
+			<!-- scroll_contents e -->
+		</div>
+		<!-- pop_contents e -->
+	</div>
+	<!-- pop_container :: 결제취소 e -->
+
+	{% include "./footer.html" %}
+	
+</div>
+<!-- wrap e -->
+
+<form name="frmTemp" id="frmTemp" method="post">
+	<input type="hidden" name="clickPage" id="clickPage" />
+</form>
+
+<script src="/util/jquery/jquery.number.min.js"></script>
+<script src="/util/date/date-ko-KR.js"></script>
+<script src="/js/util.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+
+var user = JSON.parse('{{ user | json | safe }}');
+var srchParams = JSON.parse('{{ srchParams | json | safe }}');
+
+// 결제 취소 사유
+var reasonByteMax = 600;
+
+$(document).ready(function() {
+
+	$('#reasonByteLength').number(true,0);
+	$('#reasonByteMax').html(reasonByteMax).number(true,0);
+
+	$('#reason').keyup(function(e) {
+		var txt = $(this).val();
+		var len = getByteLength(txt);
+		if (len > reasonByteMax) {
+			$('#reasonByteLength').css({'color': 'red'});
+		} else {
+			$('#reasonByteLength').css({'color': ''});
+		}
+		$('#reasonByteLength').html(len).number(true,0);
+	});
+	$('#reason').keyup();
+
+	stats();
+	motorCo_list();
+	get_banner();
+
+	$('strong.comma').number(true,0);
+	$('span.comma').number(true,0);
+
+}); //$(document).ready(function(){}
+
+function fnPaging(page, plus) {
+
+	// $('#page').val(parseInt(page)+parseInt(plus));
+	// document.getElementById('page').value = parseInt(page)+parseInt(plus);
+	$('#clickPage').val(parseInt(page)+parseInt(plus));
+
+	document.frmTemp.action = '/myPay_list';
+	document.frmTemp.submit();
+}
+
+// function openWin(receipt_url){  
+//     window.open(receipt_url, "중검단 구매 영수증", "width=420, height=685, toolbar=no, menubar=no, scrollbars=yes, resizable=yes" );  
+// }
+
+function fnPayCancel(motorSeq, pay_method) {
+
+	$('#pay_cancel').addClass('pop_open');
+	if (pay_method == 'vbank' || pay_method == 'dsend') {
+		$('#pay_cancel .when_vbank').show();
+	} else {
+		$('#pay_cancel .when_vbank').hide();
+		$('#pay_cancel .pop_contents').css('height','320px');
+	}
+	$.ajax({
+		url: '/select_bank_info',
+		data: {},
+		type: 'POST',
+		dataType: 'json',
+		contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+		success: function(data) {
+			$('#bankNm').val(data.bankNm);
+			$('#accountNo').val(data.accountNo);
+			$('#accountHolder').val(data.accountHolder);
+		},
+		error: function(data) { console.error(data); }
+	});
+	$('#pay_cancel a.basic_btn03_red').attr('onclick','fnPayCancelSbmt('+motorSeq+',"'+pay_method+'");return false'); // 여기에서는 prop으로 하면 작동하지 않음
+	// console.log($('#pay_cancel a.basic_btn03_red').parent().html());
+}
+
+function fnPayCancelSbmt(motorSeq, pay_method) {
+
+	var reason = $('#reason').val().trim();
+
+	if (pay_method == 'vbank') {
+		if ($('#bankNm').val() == '' || $('#accountNo').val() == '' || $('#accountHolder').val() == '') {
+			alert('가상계좌로 결제한 경우에는 회원정보수정 메뉴화면에서 환급받을 계좌정보가 미리 등록되어 있어야 합니다.');
+			return false;
+		// } else {
+		// 	if (reason.length < 2) {
+		// 		alert('취소 사유를 입력해주세요.');
+		// 		return false;
+		// 	// } else {
+		// 	// 	alert('무통장 입금 취소의 경우 준비중...'); // !!!
+		// 	// 	return false;
+		// 	}
+		}
+	}// else {
+		if (reason.length == 0) {
+			alert('취소 사유를 입력해주세요.');
+			$('#reason').focus();
+			return false;
+		}
+		if (getByteLength(reason) > reasonByteMax) {
+			alert('취소 사유를 한글 ' + (reasonByteMax / 3) + '자, 영문 ' + reasonByteMax + '자 이내로 입력해주세요.');
+			$('#reason').focus();
+			return false;
+		}
+		$.ajax({
+			url: '/pay_cancel_check',
+			data: {
+				motorSeq: motorSeq
+			},
+			type: 'POST',
+			dataType: 'json',
+			contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+			success: function(data) {
+				if (data != 'OK') {
+					alert(data);
+				} else {
+
+					$.ajax({
+						url: '/pay_cancel',
+						data: {
+							motorSeq: motorSeq,
+							reason: reason
+						},
+						type: 'POST',
+						dataType: 'json',
+						contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+						success: function(data) {
+							if (data != 'OK') {
+								alert(data);
+							} else {
+								window.location.reload(true);
+								// $this.prev().removeClass('basic_btn02_blue').addClass('basic_btn02_red').text('결제취소');
+							}
+						},
+						error: function(data) { console.error(data); }
+					});
+				}
+			},
+			error: function(data) { console.error(data); }
+		});
+
+	//}
+}
+
+</script>
+
+</body>
+</html>
